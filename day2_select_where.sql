@@ -217,7 +217,7 @@ where isim like '%n';
     INSERT INTO kelimeler VALUES (1012, 'h9t', 3);
     INSERT INTO kelimeler VALUES (1013, 'hoot', 4);
     INSERT INTO kelimeler VALUES (1014, 'haaat', 5);
-    
+    INSERT INTO kelimeler VALUES (1015, 'hooooot', 7);
     DROP TABLE kelimeler;
 
     
@@ -273,25 +273,35 @@ where regexp_like(kelime, 'h[a-zA-Z0-9]t' , 'c');
  -----------------------------------------------------------------------------*/ 
  
  select * from kelimeler
- where regexp_like(kelime, '^h[a|i]t$');
+ where regexp_like(kelime, 'h[ai]t');
+ 
+ -- a|i veya ai birlesik olabilir. koseli parantez sadece 1 karakter demektir!
    
 /* -----------------------------------------------------------------------------
   ORNEK28: İçinde m veya i veya e olan kelimelerin tüm bilgilerini listeleyiniz.
  -----------------------------------------------------------------------------*/     
-   
+
+select * from kelimeler
+where regexp_like(kelime, 'm|i|e');
+-- veya '[mie]'
+
  
 /* -----------------------------------------------------------------------------
   ORNEK29: a veya s ile başlayan kelimelerin tüm bilgilerini listeleyiniz.
 -----------------------------------------------------------------------------*/ 
+ select * from kelimeler
+ where regexp_like(kelime, '^a|^s');
+ -- '^[as]'
  
-​
 /* -----------------------------------------------------------------------------
   ORNEK30: içerisinde en az 2 adet oo barıdıran kelimelerin tüm bilgilerini 
   listeleyiniz.
 -----------------------------------------------------------------------------*/ 
  
+ select * from kelimeler
+ where regexp_like(kelime, '[o]{3}');
  
- 
+ -- [o][o] olabilir ama cokta garanti degil
  
  
  
