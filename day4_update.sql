@@ -65,35 +65,58 @@ use sys;
     where vergi_no=101;
     
 /* -----------------------------------------------------------------------------
-  ORNEK4: firma_ismi casper olan tedarikcinin irtibat_ismini 'İpek Bilgin' 
+  ORNEK4: firma_ismi casper olan tedarikcinin irtibat_ismini 'Recep Ivedik' 
   olarak güncelleyiniz.
  -----------------------------------------------------------------------------*/ 
+   update tedarikciler
+   set irtibat_ismi='Recep Ivedik'
+   where firma_ismi='casper';
    
 /* -----------------------------------------------------------------------------
   ORNEK5: urunler tablosundaki 'Phone' değerlerini Telefon olarak güncelleyiniz.
  -----------------------------------------------------------------------------*/
-   
- 
+   update urunler
+   set urun_isim='Telefon'
+   where urun_isim='Phone';
+
 /* -----------------------------------------------------------------------------
   ORNEK6: urunler tablosundaki urun_id değeri 1004'ten büyük olanların urun_id
   değerlerini bir arttırınız
  -----------------------------------------------------------------------------*/ 
+    update urunler
+    set urun_id=urun_id+1
+    where urun_id>1004;
     
-  
  /* ----------------------------------------------------------------------------
   ORNEK7: urunler tablosundaki tüm ürünlerin urun_id değerini ted_vergino 
   sutun değerleri ile toplayarak güncelleyiniz.
  -----------------------------------------------------------------------------*/  
-   
+   update urunler
+   set urun_id=urun_id+ted_vergino;
     
 /*-----------------------------------------------------------------------------
  ORNEK8: urunler tablosundan Ali Bak’in aldigi urunun ismini, tedarikci 
  tablosunda irtibat_ismi 'Adam Eve' olan firmanın ismi (firma_ismi) ile 
  degistiriniz.
  -----------------------------------------------------------------------------*/
+   update tedarikciler
+   set irtibat_ismi='Adam Eve', firma_ismi='Apple'
+   where vergi_no=104;
    
-  
+   delete from tedarikciler; -- ilk liste uzerinde oynama yapildigi icin soruyu cozmek icin ilk haline getirdik. parent tablo silindigi icin child tabloda silindi
+							-- parent ve child tablolari tekrar insert ettik
+   
+   update urunler
+   set urun_isim=(select firma_ismi from tedarikciler where irtibat_ismi='Adam Eve')
+   where musteri_isim='Ali Bak';
+   
 /*------------------------------------------------------------------------------
- ORNEK9: Laptop satin alan musterilerin ismini, Apple’in irtibat_isim'i ile 
+ ORNEK9: Laptop satin alan musterilerin ismini, firma_ismi Apple’in irtibat_isim'i ile 
  degistirin
  -----------------------------------------------------------------------------*/
+ update urunler
+ set musteri_isim=(select irtibat_ismi from tedarikciler where firma_ismi='Apple')
+ where urun_isim='Laptop';
+ 
+ 
+ 
