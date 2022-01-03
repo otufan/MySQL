@@ -93,7 +93,7 @@ CREATE TABLE talebeler
        -- mesela bir hastane silindi o hastanedeki bütün kayıtlar silinmeli, oda böyle olur.
        -- cascade yoksa önce child temizlenir sonra parent
     
-
+use sys;
     INSERT INTO notlar VALUES ('123','kimya',75);
     INSERT INTO notlar VALUES ('124', 'fizik',65);
     INSERT INTO notlar VALUES ('125', 'tarih',90);
@@ -102,6 +102,8 @@ CREATE TABLE talebeler
  DELETE FROM talebeler
     WHERE id = 124;
 
+select * from notlar;
+select * from talebeler;
 drop table talebeler;
 
 
