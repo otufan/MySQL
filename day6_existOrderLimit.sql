@@ -112,7 +112,7 @@ WHERE
     INSERT INTO insanlar (ssn, adres) VALUES('567890123', 'Denizli');
     INSERT INTO insanlar (adres) VALUES('Sakarya');
     INSERT INTO insanlar (ssn) VALUES('999111222');
-    
+    select * from insanlar;
     
 -- ORNEK1: isim degeri null olanlari sorgulayiniz
 
@@ -122,8 +122,146 @@ where isim is null;
 -- ORNEK2: isim degeri girilenleri yani null olmayanlari sorgulayiniz
 
 select * from insanlar
-where isim is not null;  
+where isim is not null;
+
+/* ----------------------------------------------------------------------------
+  ORNEK3: isim 'i NULL olan kişilerin isim'ine NO NAME atayınız. kisa soruda eski yolla olur
+--------------------------------------------------------------------------*/
+update insanlar
+set isim='NO NAME'
+where isim is null;
+
+-- tabloyu eski haline dondur yani no name yazan yerler null olmali
+
+update insanlar
+set isim=null
+where isim='NO NAME';
+
+/* ----------------------------------------------------------------------------
+  ORNEK4:   isim 'i NULL olanlara 'Henuz isim girilmedi'
+            adres 'i NULL olanlara 'Henuz adres girilmedi'
+            ssn 'i NULL olanlara ' no ssn' atayalım.
+            çoklu değişimde ve  WHERE isim IS NULL or adres is null....; 
+            gibi ifade yazmamak için. coalesce=birleşmek
+-----------------------------------------------------------------------------*/  
+
+update insanlar
+set isim=coalesce(isim, 'Henuz isim girilmedi'),
+	adres=coalesce(adres, 'Henuz adres girilmedi'),
+	ssn=coalesce(ssn, 'No SSN');
+
+/*================================ ORDER BY  ===================================
+   ORDER BY cümleciği bir SORGU deyimi içerisinde belli bir SUTUN'a göre 
+   SIRALAMA yapmak için kullanılır.
+   
+   Syntax
+   -------
+      ORDER BY sutun_adi ASC   -- ARTAN
+      ORDER BY sutun_adi DESC  -- AZALAN
+==============================================================================*/       
+    CREATE TABLE kisiler 
+    (   id int PRIMARY KEY,
+        ssn CHAR(9) ,
+        isim VARCHAR(50), 
+        soyisim VARCHAR(50), 
+        maas int,
+        adres VARCHAR(50) 
+    );
     
+    INSERT INTO kisiler VALUES(1,123456789, 'Ali','Can', 3000,'Istanbul');
+    INSERT INTO kisiler VALUES(2,234567890, 'Veli','Cem', 2890,'Ankara');
+    INSERT INTO kisiler VALUES(3,345678901, 'Mine','Bulut',4200,'Adiyaman');
+    INSERT INTO kisiler VALUES(4,256789012, 'Mahmut','Bulut',3150,'Adana');
+    INSERT INTO kisiler VALUES (5,344678901, 'Mine','Yasa', 5000,'Ankara');
+    INSERT INTO kisiler VALUES (6,345458901, 'Veli','Yilmaz',7000,'Istanbul');
+    INSERT INTO kisiler VALUES(7,123456789, 'Ali','Can', 3000,'Istanbul');
+    INSERT INTO kisiler VALUES(8,234567890, 'Veli','Cem', 2890,'Ankara');
+    INSERT INTO kisiler VALUES(9,345678901, 'Mine','Bulut',4200,'Ankara');
+    INSERT INTO kisiler VALUES(10,256789012, 'Mahmut','Bulut',3150,'Istanbul');
+    INSERT INTO kisiler VALUES (11,344678901, 'Mine','Yasa', 5000,'Ankara');
+    INSERT INTO kisiler VALUES (12,345458901, 'Veli','Yilmaz',7000,'Istanbul');
+
+select * from kisiler;
+
+/* ----------------------------------------------------------------------------
+  ORNEK1: kisiler tablosunu adres'e göre sıralayarak sorgulayınız.
+ -----------------------------------------------------------------------------*/ 
+ 
+ select * 
+ from kisiler
+ order by adres;
+
+  /* ----------------------------------------------------------------------------
+  ORNEK2: kisiler tablosunu maas' a göre ters sıralayarak sorgulayınız.
+ -----------------------------------------------------------------------------*/   
+   select *
+   from kisiler
+   order by maas desc;
+    
+    /* ----------------------------------------------------------------------------
+  ORNEK4: ismi Mine olanları,maas a göre AZALAN sırada sorgulayınız.
+-----------------------------------------------------------------------------*/
+   select * 
+   from kisiler
+   where isim='Mine'
+   order by maas desc;
+    
+    
+/* ----------------------------------------------------------------------------
+  ORNEK5: soyismi 'i Bulut olanları maas sıralı olarak sorgulayınız.
+-----------------------------------------------------------------------------*/ 
+    select *
+    from kisiler
+    where soyisim='Bulut'
+    order by 5; -- 5. sutuna gore yani maasa gore -> bu sekilde de siralama yapilabiliyor
+    
+/* *********************     LIMIT    **********************************/  
+
+-- Listeden ilk 10 veriyi getirelim
+
+select * 
+from kisiler
+limit 10;
+
+-- Listeden 10. veriden sonraki 2 veriyi getirelim (11, 12)
+
+select *
+from kisiler
+limit 10,2; -- ilk sayi dahil degil 11 den basla 2. belirtilen sayi kadar git
+    
+/* ----------------------------------------------------------------------------
+  ORNEK1: MAAŞ'ı en yüksek 3 kişinin bilgilerini listeleyen sorguyu yazınız.
+-----------------------------------------------------------------------------*/
+
+select *
+from kisiler
+order by maas desc
+limit 3;
+
+/* oracle sql cozumu
+select *
+from kisiler
+order by maas desc
+fetch next 3 rows only;
+*/
+
+/* ----------------------------------------------------------------------------
+  ORNEK2: MAAŞ'a göre sıralamada 4. 5.  6. kişilerin bilgilerini listeleyen 
+  sorguyu yazınız.
+-----------------------------------------------------------------------------*/ 
+
+select *
+from kisiler
+order by maas
+limit 3,3;
+
+
+
+
+
+
+
+
     
     
     
