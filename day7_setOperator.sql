@@ -65,8 +65,73 @@ order by maas desc;
   ORNEK3: Honda,Ford ve Tofas'ta calisan personeli varsa listeleyin
 ------------------------------------------------------------------------------*/ 
 
-select isim from personel where sirket='honda'
+select isim from personel where sirket='honda' 
 union
 select isim from personel where sirket='ford'
 union
 select isim from personel where sirket='tofas';
+
+/* -----------------------------------------------------------------------------
+  ORNEK4: 5000’den az maas alanlara ayrica Honda calisani olmayanlarin bilgilerini ekleyip
+  listeleyen bir sorgu yaziniz. 
+------------------------------------------------------------------------------*/
+
+select * from personel where maas < 5000
+union all
+select * from personel where sirket!='Honda';
+
+
+select * from personel where maas < 5000 and sirket!='Honda';
+
+/* -----------------------------------------------------------------------------
+  ORNEK5: Ismi Mehmet Ozturk olanlarin sehirleri ile Istanbul'da calismayanlarin isimlerini ve 
+  sehirlerini listeleyen sorguyu yaziniz.
+------------------------------------------------------------------------------*/
+
+select isim, sehir from personel where isim='Mehmet Ozturk'
+union
+select isim, sehir from personel where sehir<>'Istanbul';
+
+/*======================== FARKLI TABLOLARDAN BIRLESTIRME ====================*/   
+    
+    CREATE TABLE personel_bilgi 
+    (
+        id int, 
+        tel char(10) UNIQUE , 
+        cocuk_sayisi int
+    ); 
+   
+    INSERT INTO personel_bilgi VALUES(123, '5302345678' , 5);
+    INSERT INTO personel_bilgi VALUES(234, '5422345678', 4);
+    INSERT INTO personel_bilgi VALUES(345, '5354561245', 3); 
+    INSERT INTO personel_bilgi VALUES(478, '5411452659', 3);
+    INSERT INTO personel_bilgi VALUES(789, '5551253698', 2);
+    INSERT INTO personel_bilgi VALUES(344, '5524578574', 2);
+    INSERT INTO personel_bilgi VALUES(125, '5537488585', 1);
+    
+    select * from personel_bilgi;
+    
+/* -----------------------------------------------------------------------------
+  ORNEK6: id'si 123456789 olan personelin Personel tablosundan sehir ve 
+  maasini, personel_bilgi tablosundan da (id ilk 3 hanesiyle kaydolmuş=123)
+  tel ve cocuk sayisini yazdirin  
+------------------------------------------------------------------------------*/    
+
+    select sehir as sehir_tel, maas as maas_cocukSayisi from personel where id=123456789
+    union
+    select tel, cocuk_sayisi from personel_bilgi where id=12;
+    
+  /* -----------------------------------------------------------------------------
+  ORNEK7: Personel tablosundan Istanbul veya Ankara'da calisanlarin id'lerini
+ ve 
+ Personel_bilgi tablosundan 2 veya 3 cocugu olanlarin id lerini sorgulayiniz.
+------------------------------------------------------------------------------*/ 
+
+select id from personel where sehir in('Istanbul', 'Ankara')
+union
+select id from personel_bilgi where cocuk_sayisi in(2, 3);
+
+-- sirketlerden grupla sirketlerin calisan isimlerini say
+
+select sirket, count(isim) calisan_sayisi from personel group by sirket;
+

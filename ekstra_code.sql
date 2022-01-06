@@ -18,3 +18,21 @@ select * from customer;
 select concat('Adiniz Soyadiniz: ', ad,' ', soyad) ad_soyad from customer;
 
 select concat('musteri no: ', musteri_no,'. kisi : ', ad,' ', soyad) bilgi  from customer;
+
+-- ***********  length-left-right (String functions) ******************
+
+select ad, length(ad), soyad, length(soyad) from customer; 
+
+select ad, left(ad,1) ad_kisaltma, soyad, left(soyad, 1) soyad_kisaltma from customer;
+
+select ad, soyad, concat(left(ad,1), '. ', left(soyad, 1), '. ') ad_soyad from customer;
+
+-- soru:  5 ve 5 karakterden büyük olan isimleri MORIS -> MRS şeklinde yazdırınız.
+-- yani 1. , 3. ve 5. karakterleri alınız
+
+select ad, concat(left(ad,1), right(left(ad,3),1), right(left(ad,5),1)) as 1_3_5 from customer where length(ad)>=5;
+
+
+
+
+
