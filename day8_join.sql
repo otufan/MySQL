@@ -43,3 +43,145 @@ use sys;
     INSERT INTO siparisler VALUES(33, 103, '2020-04-19');
     INSERT INTO siparisler VALUES(44, 104, '2020-04-20');
     INSERT INTO siparisler VALUES(55, 105, '2020-04-21');
+    
+    select * from sirketler;
+    select * from siparisler;
+    
+    /*=============================== INNER JOIN  ==================================
+    
+    Iki tablonun kesisim kumesi ile yeni bir tablo olusturmak icin kullanilir.
+    
+    Syntax
+    -----------
+    SELECT sutun1,sutun2....sutunN
+    FROM tablo1 
+    INNER JOIN tablo2
+    ON tablo1.sutun = tablo2.sutun;
+================================================================================  
+      
+/* -----------------------------------------------------------------------------
+  ORNEK1: Iki Tabloda sirket_id'si ayni olanlarin sirket_ismi, siparis_id ve 
+  siparis_tarihleri listeleyen bir sorgu yaziniz.
+------------------------------------------------------------------------------*/  
+    
+    select sir.sirket_isim, sip.siparis_id, sip.siparis_tarihi, sip.sirket_id
+    from sirketler sir
+    inner join siparisler sip
+    on sir.sirket_id=sip.sirket_id;
+    
+   /* -----------------------------------------------------------------------------
+  ORNEK1: Iki Tabloda sirket_id'si ayni olanlarin sirket_ismi, siparis_id ve 
+  siparis_tarihleri listeleyen bir sorgu yaziniz.
+------------------------------------------------------------------------------*/  
+    
+    SELECT s.sirket_isim, sp.siparis_id, sp.siparis_tarihi, sp.sirket_id
+    FROM siparisler sp  -- tablo önceliği farketmez
+    INNER JOIN sirketler s 
+    on s.sirket_id = sp.sirket_id; -- where yerine on yazilacak
+    
+    -- INNER JOIN ile sadece iki tabloki ortak olan satirlar secilir.
+    -- Diger bir ifadeyle iki tablodaki ortak olan sirket_id degerleri icin 
+    -- ilgili sutunlar listenir.
+    
+    -- INNER anahtar kelimesi opsiyoneldir.
+    
+        
+/*=============================== LEFT JOIN  ==================================
+    
+    LEFT JOIN, 1. tablodan (sol tablo) SELECT ile ifade edilen sutunlara ait tum
+    satirlari getirir. 
+    Ancak, diger tablodan sadece ON ile belirtilen kosula uyan satirlari getirir. 
+        
+    Syntax
+    -----------
+    SELECT sutun1,sutun2....sutunN
+    FROM tablo1 
+    LEFT JOIN tablo2
+    ON tablo1.sutun = tablo2.sutun;
+==============================================================================*/  
+            
+/* -----------------------------------------------------------------------------
+  ORNEK2: sirketler tablosundaki tum sirketleri ve bu sirketlere ait olan 
+  siparis_id ve siparis_tarihleri listeleyen bir sorgu yaziniz.
+------------------------------------------------------------------------------*/    
+    
+    select sir.sirket_isim, sir.sirket_id, sip.siparis_tarihi, sip.siparis_id
+	from sirketler sir
+    left join siparisler sip
+    on sir.sirket_id=sip.sirket_id;
+    
+	select sir.sirket_isim, sir.sirket_id, sip.siparis_tarihi 
+	from siparisler sip
+    right join sirketler sir
+    on sip.sirket_id=sir.sirket_id;
+    
+    /* ************************************************************* */
+    
+    -- Left Join'de ilk tablodaki tum satirlar gosterilir.
+    -- Ilk tablodaki satirlara 2.tablodan kosula uyan ortak satirlar 
+	-- gosterilir, ancak ortak olmayan kisimlar bos kalir
+          
+/*=============================== RIGHT JOIN  ==================================
+    
+    RIGHT JOIN, 2. tablodan (sag tablo) SELECT ile ifade edilen sutunlara ait tum
+    satirlari getirir. 
+    Ancak, diger tablodan sadece ON ile belirtilen kosula uyan satirlari getirir. 
+        
+    Syntax
+    -----------
+    SELECT sutun1,sutun2....sutunN
+    FROM tablo1 
+    RIGHT JOIN tablo2
+    ON tablo1.sutun = tablo2.sutun;
+==============================================================================*/   
+      
+/* -----------------------------------------------------------------------------
+  ORNEK3: siparisler tablosundaki tum siparis_id ve siparis_tarihleri ile 
+  bunlara karşılık gelen sirket_isimlerini listeleyen bir sorgu yaziniz.
+------------------------------------------------------------------------------*/ 
+
+select sip.siparis_id, sip.siparis_tarihi, sir.sirket_isim
+from sirketler as sir
+right join siparisler as sip
+on sip.sirket_id=sir.sirket_id;
+
+-- Right Join'de 2. tablodaki tum satirlar gosterilir.
+-- 2 tablodaki satirlara 1.tablodan kosula uyan ortak satirlar gosterilir
+-- ancak ortak olmayan kisimlar bos kalirir.
+    
+    
+    /*=============================== full JOIN  ==================================
+    full JOIN: (left join + union + right join)
+   full  JOIN, Her iki tablo icin secilen sutunlara ait olan tum satirlari 
+    getirmek icin kullanilir. 
+    
+    Syntax
+    -----------
+    SELECT sutun1,sutun2....sutunN
+    FROM tablo1 
+    left JOIN tablo2
+    ON tablo1.sutun = tablo2.sutun
+    union
+    SELECT sutun1,sutun2....sutunN
+    FROM tablo1 
+    right JOIN tablo2
+    ON tablo1.sutun = tablo2.sutun
+==============================================================================*/   
+   
+/* -----------------------------------------------------------------------------
+  ORNEK4: sirketler ve siparisler adındaki tablolarda yer alan sirket_isim, 
+  siparis_id ve siparis_tarihleri listeleyen bir sorgu yaziniz.
+------------------------------------------------------------------------------*/ 
+
+select sir.sirket_id, sir.sirket_isim, sip.siparis_id, sip.siparis_tarihi -- birinci tablodan sirket_id !!!
+from sirketler sir
+left join siparisler sip
+on sir.sirket_id=sip.sirket_id
+union
+select sip.sirket_id, sir.sirket_isim, sip.siparis_id, sip.siparis_tarihi -- ikinci tablodan sirket_id !!!
+from sirketler sir
+right join siparisler sip
+on sir.sirket_id=sip.sirket_id;
+
+
+
