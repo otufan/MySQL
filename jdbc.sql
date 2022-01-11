@@ -61,5 +61,5 @@ CREATE TABLE personel
     INSERT INTO personel VALUES (7933,'ZEKI','MUHENDIS',1333,4300,60);
     
      commit;
-     
-     select * from bolumler ;
+    
+     select * from calisanlar ;
